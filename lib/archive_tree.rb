@@ -1,17 +1,32 @@
-require 'active_record' unless defined? ActiveRecord
-
-# require 'ruby-debug';
-# years = {}
-# (Post.minimum("Year(created_at)")..Post.maximum("Year(created_at)")).each do |y|
-#   years[y.to_sym] = {}
-#   Post.where("Year(created_at)").group("Month(created_at)").map { |p| p.created_at.month }.each do |m|
-#     years[y.to_sym][m.to_s.to_sym] = Post.where("Year(created_at) = #{y}").where("Month(created_at) = #{m}").all
-#   end
-# end
-# debugger
-# years
-
+require 'rails_ext'
 
 module ArchiveTree
-  
+
+  def self.included(klass)
+    klass.send(:extend, ClassMethods)
+  end
+
+  module ClassMethods
+
+    def years_hash
+      Post.group('YEAR(created_at)').size
+    end # years_hash
+
+    def months_hash(options = {})
+      _months = Post.where("YEAR(created_at) = #{options[:year] || Time.now.year}").group('MONTH(created_at)').size
+      months = {}
+
+      if type = options.delete(:month_names)
+        _months.each do |month, count|
+          months[ type == :long ? Date::MONTHNAMES[month.to_i] : Date::ABBR_MONTHNAMES[month.to_i] ] = count
+        end
+      else
+        months = _months
+      end
+
+      months
+    end #months_hash
+
+  end # ClassMethods
+
 end # ArchiveTree
