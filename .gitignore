@@ -1,8 +1,5 @@
 .bundle
-config/database.yml
-db/*.sqlite3
-log/*.log
-tmp/**/*
-capybara*.html
+spec/config/database.yml
+spec/log/*.log
 .DS_Store
 !.gitignore
