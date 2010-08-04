@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
 
   s.name        = "archive_tree"
-  s.version     = '1.0.0.alpha.1'
+  s.version     = '1.0.0.beta.1'
   # TODO: add the gem summary text
   s.summary     = "TODO"
 
@@ -19,7 +19,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency(%q<activerecord>, [">= 3.0.0.rc"])
 
-  s.s.add_development_dependency "rspec"
+  s.add_development_dependency "rspec"
+  s.add_development_dependency "database_cleaner"
 
   s.files        = Dir.glob("{lib}/**/*") + %w(MIT-LICENSE README.md)
   s.require_path = 'lib'
