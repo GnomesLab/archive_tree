@@ -1,1 +1,1 @@
-require 'rails/init'
+require 'archive_tree'
