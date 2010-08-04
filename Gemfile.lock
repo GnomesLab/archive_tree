@@ -16,10 +16,12 @@ GEM
       activesupport (>= 3.0.0.beta)
     builder (2.1.2)
     columnize (0.3.1)
+    database_cleaner (0.5.2)
     diff-lcs (1.1.2)
     i18n (0.4.1)
     linecache19 (0.5.11)
       ruby_core_source (>= 0.1.4)
+    mysql (2.8.1)
     rspec (2.0.0.beta.19)
       rspec-core (= 2.0.0.beta.19)
       rspec-expectations (= 2.0.0.beta.19)
@@ -45,5 +47,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord (>= 3.0.0.rc)
+  database_cleaner
+  mysql
   rspec (>= 2.0.0.beta)
   ruby-debug19
