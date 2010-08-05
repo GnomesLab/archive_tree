@@ -26,7 +26,11 @@ Imagine that you have a blog application with Posts. Great!
 
 Now let's say that you wish to allow your users to sweep through your posts in a chronologically accurate tree view. Enters ArchiveTree!
 
+### API
+
 TODO: add examples (extracted from ArchiveTree::ClassMethods)
+
+### Views
 
 
 ## Documentation
@@ -35,4 +39,14 @@ This gem's documentation documentation is available at http://yardoc.org/docs/Gn
 
 
 ## License
-Copyright (c) 2010 Diogo Almeida, released under the MIT license. For more information regarding MIT license, please check our [license file]()
+
+Copyright (c) 2010 Diogo Almeida, released under the MIT license. For more information regarding MIT license, please check our [MIT license file](http://github.com/GnomesLab/archive_tree/blob/master/MIT-LICENSE)
+
+
+## Feedback, issues and contributions
+
+If you have an issue with ArchiveTree please create a ticket in our [issue tracker](http://gnomeslab.lighthouseapp.com/projects/57307-archive_tree/overview).
+
+Feel free to fork this project at any time and submit your changes (along with their respective tests).
+
+Should you just wish to provide feedback or say hi, you can always contact us directly through diogo (dot) almeida (at) gnomeslab (dot) com

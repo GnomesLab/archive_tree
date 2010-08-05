@@ -1,1 +1,1 @@
-require 'archive_tree'
+require File.join(File.dirname(__FILE__), 'lib', 'archive_tree')

@@ -1,7 +1,23 @@
 require 'spec_helper'
 
 context ArchiveTree do
-  it "should do something" do
-    pending "testes not yet implemented. trying to figure out the best queries to use, eventually at arel lvl"
-  end
-end
+
+  describe "archive tree" do
+
+    before :each do
+      [2007, 2008, 2009, 2010].each do |year|
+        5.times { |i| Factory.create(:post, :created_at => "#{year}-#{01 + i}-01 00:00:00") }
+      end
+    end
+
+    describe "default behavior" do
+      it "should return an empty hash when there are no records" do
+        Post.destroy_all
+
+        Post.archive_tree.should == {}
+      end
+    end
+
+  end # archive_tree
+
+end # ArchiveTree

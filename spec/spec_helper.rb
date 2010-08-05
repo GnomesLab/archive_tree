@@ -4,6 +4,7 @@ begin
   require 'logger'
   require 'rspec'
   require 'database_cleaner'
+  require 'factory_girl'
   require 'archive_tree'
 
   RSpec.configure do |config|
@@ -34,6 +35,9 @@ end
 
 # Requires supporting files with custom matchers and macros, etc, in ./support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
+
+# Requires all supporting factories
+Dir.glob(File.join(File.dirname(__FILE__), 'factories', '*_factory.rb')).each { |f| require f }
 
 # ActiveRecord Test database configurations
 database_yml_file = File.expand_path('../config/database.yml', __FILE__)
