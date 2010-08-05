@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
 
   s.name        = "archive_tree"
-  s.version     = '1.0.0.alpha.1'
+  s.version     = '1.0.0.alpha.2'
   # TODO: add the gem summary text
   s.summary     = "Creates chronological trees of your models based on their created_at column value."
 
