@@ -11,12 +11,14 @@ context ArchiveTree do
     end
 
     describe "default behavior" do
+
       it "should return an empty hash when there are no records" do
         Post.destroy_all
 
         Post.archive_tree.should == {}
       end
-    end
+
+    end # default behavior
 
   end # archive_tree
 
