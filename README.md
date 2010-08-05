@@ -28,10 +28,35 @@ Now let's say that you wish to allow your users to sweep through your posts in a
 
 ### API
 
-TODO: add examples (extracted from ArchiveTree::ClassMethods)
+#### Default usage:
+
+<pre>
+Post.archive_tree #=> { 2010 => { 1 => [Post], 2 => [Post] },
+                        2011 => { 1 => [Post], 4 => [Post], 8 => [Post] } }
+</pre>
+
+#### Sweep all months of the current year:
+
+<pre>
+Post.archive_tree(:years => [Time.now.year]) #=> { 2010 => { 1 => [Post], 2 => [Post] } }
+</pre>
+
+#### Skip all months other than January (1):
+
+<pre>
+Post.archive_tree(:months => [1]) #=> { 2010 => { 1 => [Post] },
+                                      { 2011 => { 1 => [Post] } } }
+</pre>
+
+#### Only sweep January 2010:
+
+<pre>
+Post.archive_tree(:years_and_months => { 2010 => [1] }) #=> { 2010 => { 1 => [Post] } }
+</pre>
 
 ### Views
 
+TODO: add view examples
 
 ## Documentation
 

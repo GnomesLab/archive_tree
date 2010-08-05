@@ -123,14 +123,22 @@ module ArchiveTree
     # TODO: Optimize the queries.
     def archive_tree(options = {})
       tree = {}
+      years = options[:years_and_months] ? options[:years_and_months].keys : nil || options[:years] ||
+        archived_years.keys || []
 
-      archived_years.each_key do |year|
-        key = year.to_i
-        tree[key] = {}
+      years.each do |year|
+        tree[year] = {}
+        months = archived_months(:year => year).keys
 
-        archived_months(:year => year).each_key do |month|
-          tree[key][month.to_i] = {}
-          tree[key][month.to_i] = archive_node year, month
+        if options[:years_and_months]
+          months.reject! { |m| options[:years_and_months][year].include?(m) == false }
+        elsif options[:months]
+          months.reject! { |m| options[:months].include?(m) == false }
+        end
+
+        months.each do |month|
+          tree[year][month] = {}
+          tree[year][month] = archive_node year, month
         end
       end
 
