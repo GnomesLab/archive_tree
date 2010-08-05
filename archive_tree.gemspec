@@ -4,16 +4,16 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
 
   s.name        = "archive_tree"
-  s.version     = '1.0.0.beta.1'
+  s.version     = '1.0.0.alpha.1'
   # TODO: add the gem summary text
-  s.summary     = "TODO"
+  s.summary     = "Creates chronological trees of your models based on their created_at column value."
 
   s.authors     = ["Diogo Almeida"]
   s.email       = ["diogo.almeida@gnomeslab.com"]
   s.homepage    = "http://github.com/GnomesLab/archive_tree/"
 
   # TODO: add the gem description text
-  s.description = "TODO"
+  s.description = "ArchiveTree is a Ruby Gem that makes it easy for you to create beautiful chronological archive trees of your models. For instance, you can create a tree for your blog posts."
 
   s.required_rubygems_version = ">= 1.3.7"
 
