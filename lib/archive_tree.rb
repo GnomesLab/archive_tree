@@ -1,5 +1,3 @@
-require 'rails_ext'
-
 # +ArchiveTree+ is responsible for the creation of hashes that cronologically represent your model creation date.
 #
 # If you wish to take advantage of its functionalities, please include this module in your ActiveRecord Model.

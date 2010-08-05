@@ -3,6 +3,7 @@ $:.unshift File.dirname(__FILE__) unless $:.include? File.dirname(__FILE__)
 begin
   require 'logger'
   require 'rspec'
+  require 'active_record'
   require 'database_cleaner'
   require 'factory_girl'
   require 'archive_tree'

@@ -1,1 +1,0 @@
-require File.join('rails_ext', 'active_record')
