@@ -32,6 +32,7 @@ module ArchiveTree
     #   Post.years_hash #=> { 2009 => 8, 2010 => 30 }
     def archived_years
       years = {}
+      where("#{date_field} IS NOT NULL").
       group("YEAR(#{date_field})").size.each { |year, count| years[year.to_i] = count }
 
       years

@@ -14,6 +14,14 @@ describe ArchiveTree do
       Post.archived_years.should == { Time.now.year => 1, (Time.now.year + 1) => 1 }
     end
 
+    it "discards dates that are null" do
+      2.times { |i| Factory.create(:post, :created_at => "#{Time.now.year + i}-#{01 + i}-01 00:00:00") }
+
+      Post.last.update_attributes(:created_at => nil)
+
+      Post.archived_years.should == { Time.now.year => 1 }
+    end
+
   end # archived_years
 
 end # ArchiveTree

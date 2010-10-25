@@ -40,6 +40,10 @@ describe ArchiveTree do
       Post.archived_months(:month_names => :invalid_value).should == { 1 => 1, 2 => 1 }
     end
 
+    it "discards dates that are null" do
+      Post.first.update_attributes(:created_at => nil)
+      Post.archived_months.should == { 2 => 1 }
+    end
   end # archived_months
 
 end # ArchiveTree
