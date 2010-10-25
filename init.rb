@@ -1,1 +1,1 @@
-require 'archive_tree'
+autoload :ArchiveTree, 'archive_tree'
