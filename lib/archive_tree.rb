@@ -5,11 +5,11 @@
 #
 # Examples
 #   class Post < ActiveRecord::Base
-#     act_as_archive # use the created_at
+#     act_as_archive # uses +created_at+ by default
 #   end
 #
 #   class Post < ActiveRecord::Base
-#     act_as_archive :published_at # use the published_at
+#     act_as_archive :published_at # uses +published_at+ instead of +created_at+ (default)
 #   end
 #
 #   Post.archive_tree(:years_and_months => { 2010 => [1] }) #=> { 2010 => { 1 => [Post] } }
@@ -23,12 +23,13 @@ module ArchiveTree
     raise ::ArgumentError, "undefined parameter #{date_field.to_s}" unless column = columns_hash[date_field.to_s]
     raise ::ArgumentError, "invalid parameter #{date_field.to_s}" unless column.type == :datetime
 
-    @date_field = date_field
+    self.date_field = date_field # Stores the date column
+
     extend Core
   end
 
   private
-    attr_reader :date_field
+    attr_accessor :date_field
 
 end # ArchiveTree
 
