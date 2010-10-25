@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-context ArchiveTree do
+describe ArchiveTree do
 
   describe "archived years" do
 

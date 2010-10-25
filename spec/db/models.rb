@@ -1,3 +1,3 @@
 class Post < ActiveRecord::Base
-  include ArchiveTree
+  act_as_archive
 end
