@@ -99,9 +99,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord (>= 3.0.1)
-  database_cleaner
-  factory_girl_rails
+  activerecord (~> 3.0)
+  database_cleaner (~> 0.5)
+  factory_girl_rails (~> 1.0)
   mysql
-  rspec (~> 2.0.0)
+  rspec (~> 2.0)
   ruby-debug19 (~> 0.11)
