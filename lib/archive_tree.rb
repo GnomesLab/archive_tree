@@ -21,7 +21,7 @@ module ArchiveTree
 
   def act_as_archive(date_field = :created_at)
     raise ::ArgumentError, "undefined parameter #{date_field.to_s}" unless column = columns_hash[date_field.to_s]
-    raise ::ArgumentError, "invalid parameter #{date_field.to_s}" unless column.type == :datetime
+    raise ::ArgumentError, "invalid parameter #{date_field.to_s}"   unless column.type == :datetime
 
     self.date_field = date_field # Stores the date column
 

@@ -1,8 +1,22 @@
 module ArchiveTree
 
-  module Core
+  module Core #:nodoc:
+    
+    # Named scope that retrieves the revords for a given year and month.
+    #
+    # Note: This scope can be chained, e.g. Post.archive_node.where('id > 100')
+    #
+    # Default behaviors
+    #   * year  #=> defaults to the current year (e.g. 2010)
+    #   * month #=> defaults to the current month (e.g. 10)
+    #
+    # Example using default values:
+    #   Post.archive_node
+    #
+    # Example overridding values:
+    #   Post.archive_node(2011, 1)
     def archive_node(year = Time.now.year, month = Time.now.month)
-      where("YEAR(#{@date_field}) = #{year}").where("MONTH(#{@date_field}) = #{month}").order("#{@date_field} ASC")
+      where("YEAR(#{date_field}) = #{year}").where("MONTH(#{date_field}) = #{month}").order("#{date_field} ASC")
     end
 
     # Constructs a single-level years hash based on your +Model#created_at+ column.
