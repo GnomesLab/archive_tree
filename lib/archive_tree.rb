@@ -1,5 +1,3 @@
-require 'archive_tree/core'
-
 # +ArchiveTree+ is responsible for the creation of hashes that cronologically represent your model
 # based on a provided field
 #
@@ -18,6 +16,9 @@ require 'archive_tree/core'
 #
 # TODO: This module should undergo a query optimization. Furthermore, an ORM abstraction.
 module ArchiveTree
+
+  autoload :Core, 'archive_tree/core'
+
   def act_as_archive(date_field = :created_at)
     raise ::ArgumentError, "undefined parameter #{date_field.to_s}" unless column = columns_hash[date_field.to_s]
     raise ::ArgumentError, "invalid parameter #{date_field.to_s}" unless column.type == :datetime
@@ -28,6 +29,7 @@ module ArchiveTree
 
   private
     attr_reader :date_field
+
 end # ArchiveTree
 
 ActiveRecord::Base.send :extend, ArchiveTree if defined?(ActiveRecord::Base)
