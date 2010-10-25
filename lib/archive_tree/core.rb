@@ -19,7 +19,7 @@ module ArchiveTree
       where("YEAR(#{date_field}) = #{year}").where("MONTH(#{date_field}) = #{month}").order("#{date_field} ASC")
     end
 
-    # Constructs a single-level years hash based on your +Model#created_at+ column.
+    # Constructs a single-level hash of years using the defined +date_field+ column.
     #
     # The returned hash is a key-value-pair of integers. The key represents the year (in integer) and the value
     # represents the number of records for that year (also in integer).
@@ -32,12 +32,12 @@ module ArchiveTree
     #   Post.years_hash #=> { 2009 => 8, 2010 => 30 }
     def archived_years
       years = {}
-      group("YEAR(#{@date_field})").size.each { |year, count| years[year.to_i] = count }
+      group("YEAR(#{date_field})").size.each { |year, count| years[year.to_i] = count }
 
       years
     end # archived_years
 
-    # For a given year, constructs a single-level months hash based on your +Model#created_at+ column.
+    # For a given year, constructs a single-level hash of months using the defined +date_field+ column.
     #
     # The returned hash is a key-value-pair representing the number of records for a given month, within a given years.
     # This hash can have string or integer keys, depending on the value of :month_names option,
@@ -60,7 +60,8 @@ module ArchiveTree
       months  = {}
       month_format = options.delete(:month_names) || :int
 
-      where("YEAR(#{@date_field}) = #{options[:year] || Time.now.year}").group("MONTH(#{@date_field})").size.each do |month, c|
+      where("YEAR(#{date_field}) = #{options[:year] || Time.now.year}").
+      group("MONTH(#{date_field})").size.each do |month, c|
         key = case month_format
         when :long
           Date::MONTHNAMES[month.to_i]
@@ -84,7 +85,7 @@ module ArchiveTree
     #   3. Your records (ActiveRecord::Relation)
     #
     # Default behaviors to take note:
-    #   * All records are sweeped by default based on their +created_at+ column
+    #   * All records are sweeped by default based on their +date_field+ column
     #   * Years without records are not returned
     #   * Months without records are not returned
     #   * The keys are integers, thus they will likely require conversion
@@ -115,7 +116,7 @@ module ArchiveTree
     #   Post.archive_tree(:years_and_months => { 2010 => [1] }) #=> { 2010 => { 1 => [Post] } }
     #
     # *Considerations*
-    # This method has poor performance do the 'linear' way in whic the queries are being constructed and executed.
+    # This method has poor performance due to the 'linear' way in which the queries are being constructed and executed.
     #
     # TODO: Optimize the queries.
     def archive_tree(options = {})
@@ -128,9 +129,9 @@ module ArchiveTree
         months = archived_months(:year => year).keys
 
         if options[:years_and_months]
-          months.reject! { |m| options[:years_and_months][year].include?(m) == false }
+          months.reject! { |m| !options[:years_and_months][year].include?(m) }
         elsif options[:months]
-          months.reject! { |m| options[:months].include?(m) == false }
+          months.reject! { |m| !options[:months].include?(m) }
         end
 
         months.each do |month|
