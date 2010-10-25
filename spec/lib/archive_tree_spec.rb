@@ -2,6 +2,22 @@ require 'spec_helper'
 
 describe ArchiveTree do
 
+  describe "act_as_archive" do
+
+    it "should raise exception for undefined fields" do
+      lambda do
+        eval("class Post < ActiveRecord::Base\n act_as_archive(:dummy)\n end")
+      end.should raise_error(ArgumentError)
+    end
+
+    it "should raise exception for invalid fields" do
+      lambda do
+        eval("class Post < ActiveRecord::Base\n act_as_archive(:body)\n end")
+      end.should raise_error(ArgumentError)
+    end
+
+  end # act_as_archive
+
   describe "archive tree" do
 
     before :each do
