@@ -1,15 +1,15 @@
 # +ArchiveTree+ is responsible for the creation of hashes that cronologically represent your model
 # based on a provided field
 #
-# If you wish to take advantage of its functionalities, please use the act_as_archive method in your ActiveRecord Model.
+# If you wish to take advantage of its functionalities, please use the acts_as_archive method in your ActiveRecord Model.
 #
 # Examples
 #   class Post < ActiveRecord::Base
-#     act_as_archive # uses +created_at+ by default
+#     acts_as_archive # uses +created_at+ by default
 #   end
 #
 #   class Post < ActiveRecord::Base
-#     act_as_archive :published_at # uses +published_at+ instead of +created_at+ (default)
+#     acts_as_archive :published_at # uses +published_at+ instead of +created_at+ (default)
 #   end
 #
 #   Post.archive_tree(:years_and_months => { 2010 => [1] }) #=> { 2010 => { 1 => [Post] } }
@@ -19,7 +19,7 @@ module ArchiveTree
 
   autoload :Core, 'archive_tree/core'
 
-  def act_as_archive(date_field = :created_at)
+  def acts_as_archive(date_field = :created_at)
     raise ::ArgumentError, "undefined parameter #{date_field.to_s}" unless column = columns_hash[date_field.to_s]
     raise ::ArgumentError, "invalid parameter #{date_field.to_s}"   unless column.type == :datetime
 

@@ -1,3 +1,3 @@
 class Post < ActiveRecord::Base
-  act_as_archive
+  acts_as_archive
 end
