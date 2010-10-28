@@ -4,6 +4,10 @@ describe ArchiveTree do
 
   describe "acts_as_archive" do
 
+    it "should be a class method of ActiveRecord::Base" do
+      ActiveRecord::Base.should respond_to :acts_as_archive
+    end
+
     it "should raise exception for undefined fields" do
       lambda do
         eval("class Post < ActiveRecord::Base\n acts_as_archive(:dummy)\n end")
