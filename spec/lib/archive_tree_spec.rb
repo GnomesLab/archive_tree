@@ -39,26 +39,11 @@ describe ArchiveTree do
       end
 
       it "should return the archive tree for all posts" do
-        tree = { 2007 => { 1 => [Post.find(21)],
-                           2 => [Post.find(22)],
-                           3 => [Post.find(23)],
-                           4 => [Post.find(24)],
-                           5 => [Post.find(25)] },
-                 2008 => { 1 => [Post.find(26)],
-                           2 => [Post.find(27)],
-                           3 => [Post.find(28)],
-                           4 => [Post.find(29)],
-                           5 => [Post.find(30)] },
-                 2009 => { 1 => [Post.find(31)],
-                           2 => [Post.find(32)],
-                           3 => [Post.find(33)],
-                           4 => [Post.find(34)],
-                           5 => [Post.find(35)] },
-                 2010 => { 1 => [Post.find(36)],
-                           2 => [Post.find(37)],
-                           3 => [Post.find(38)],
-                           4 => [Post.find(39)],
-                           5 => [Post.find(40)] } }
+        tree = {}
+        [2007, 2008, 2009, 2010].each_with_index do |year, year_index|
+          tree[year] = {}
+          0.upto(4).each { |i| tree[year][i+1] = [Post.find(Post.first.id + year_index*5 + i)] }
+        end
 
         Post.archive_tree.should == tree
       end
@@ -68,16 +53,11 @@ describe ArchiveTree do
     describe "years to sweep" do
 
       it "accepts a years key in the options hash and complies to it" do
-        tree = { 2009 => { 1 => [Post.find(51)],
-                           2 => [Post.find(52)],
-                           3 => [Post.find(53)],
-                           4 => [Post.find(54)],
-                           5 => [Post.find(55)] },
-                 2010 => { 1 => [Post.find(56)],
-                           2 => [Post.find(57)],
-                           3 => [Post.find(58)],
-                           4 => [Post.find(59)],
-                           5 => [Post.find(60)] } }
+        tree = {}
+        [2009, 2010].each_with_index do |year, year_index|
+          tree[year] = {}
+          0.upto(4).each { |i| tree[year][i+1] = [Post.find(10 + Post.first.id + year_index*5 + i)] }
+        end
 
         Post.archive_tree(:years => [2009, 2010]).should == tree
       end
@@ -87,10 +67,11 @@ describe ArchiveTree do
     describe "months to sweep" do
 
       it "should only sweep January" do
-        tree = { 2007 => { 1 => [Post.find(61)] },
-                 2008 => { 1 => [Post.find(66)] },
-                 2009 => { 1 => [Post.find(71)] },
-                 2010 => { 1 => [Post.find(76)] } }
+        tree = {}
+        [2007, 2008, 2009, 2010].each_with_index do |year, year_index|
+          tree[year] = {}
+          tree[year][1] = [Post.find(Post.first.id + year_index*5)]
+        end
 
         Post.archive_tree(:months => [1]).should == tree
       end
@@ -100,8 +81,8 @@ describe ArchiveTree do
     describe "years and months" do
 
       it "should comply with the requested years and months filter" do
-        tree = { 2007 => { 1 => [Post.find(81)] },
-                 2008 => { 2 => [Post.find(87)], 3 => [Post.find(88)] } }
+        tree = { 2007 => { 1 => [Post.find(Post.first.id)] },
+                 2008 => { 2 => [Post.find(Post.first.id + 6)], 3 => [Post.find(Post.first.id + 7)] } }
 
         Post.archive_tree(:years_and_months => { 2007 => [1], 2008 => [2, 3] }).should == tree
       end

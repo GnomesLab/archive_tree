@@ -7,6 +7,7 @@ begin
   require 'active_record'
   require 'database_cleaner'
   require 'factory_girl'
+  require 'action_view'
   require 'archive_tree'
 
   RSpec.configure do |config|

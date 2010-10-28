@@ -18,6 +18,7 @@
 module ArchiveTree
 
   autoload :Core, 'archive_tree/core'
+  autoload :ActionViewExtensions, 'archive_tree/action_view_extensions'
 
   def acts_as_archive(date_field = :created_at)
     raise ::ArgumentError, "undefined parameter #{date_field.to_s}" unless column = columns_hash[date_field.to_s]
