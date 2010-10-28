@@ -57,6 +57,9 @@ begin
       load File.join(File.dirname(__FILE__), 'db', 'schema.rb')
       load File.join(File.dirname(__FILE__), 'db' , 'models.rb')
     end
+
+    # The config/database.yml is in the spec folder
+    DatabaseCleaner.app_root = File.expand_path('spec')
   else
     raise "Please create #{database_yml} first. Take a look at the database.sample.yml in the config folder."
   end
@@ -64,6 +67,3 @@ rescue StandardError => e
   puts "Something went wrong while attempting to load your database file, or while configuring ActiveRecord."
   throw e
 end
-
-# The config/database.yml is in the spec folder
-DatabaseCleaner.app_root = File.expand_path('spec')
