@@ -1,6 +1,7 @@
 $:.unshift File.dirname(__FILE__) unless $:.include? File.dirname(__FILE__)
 
 begin
+  require 'erb'
   require 'logger'
   require 'rspec'
   require 'active_record'
@@ -45,8 +46,7 @@ database_yml_file = File.expand_path('../config/database.yml', __FILE__)
 
 begin
   if File.exists?(database_yml_file)
-    active_record_configuration = YAML.load_file(database_yml_file)["test"]
-
+    active_record_configuration = YAML.load_file(database_yml_file)['test']
     ActiveRecord::Base.establish_connection(active_record_configuration)
     ActiveRecord::Base.logger = Logger.new(File.join(File.dirname(__FILE__), 'log', 'test.log'))
 
@@ -63,3 +63,6 @@ rescue StandardError => e
   puts "Something went wrong while attempting to load your database file, or while configuring ActiveRecord."
   throw e
 end
+
+# The config/database.yml is in the spec folder
+DatabaseCleaner.app_root = File.expand_path('spec')
