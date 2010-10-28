@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = ">= 1.3.7"
 
-  s.add_dependency(%q<activerecord>, [">= 3.0.0.rc"])
+  s.add_dependency(%q<activerecord>, ["~> 3.0"])
 
   s.add_development_dependency "rspec"
   s.add_development_dependency "database_cleaner"
