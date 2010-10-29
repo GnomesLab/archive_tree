@@ -2,21 +2,25 @@ module ArchiveTree
 
   module Core #:nodoc:
     
-    # Named scope that retrieves the revords for a given year and month.
+    # Named scope that retrieves the records for a given year and month.
     #
     # Note: This scope can be chained, e.g. Post.archive_node.where('id > 100')
     #
     # Default behaviors
-    #   * year  #=> defaults to the current year (e.g. 2010)
-    #   * month #=> defaults to the current month (e.g. 10)
+    #   * :year  #=> defaults to the current year (e.g. 2010)
+    #   * :month #=> all
     #
     # Example using default values:
     #   Post.archive_node
     #
     # Example overridding values:
-    #   Post.archive_node(2011, 1)
-    def archive_node(year = Time.now.year, month = Time.now.month)
-      where("YEAR(#{date_field}) = #{year}").where("MONTH(#{date_field}) = #{month}").order("#{date_field} ASC")
+    #   Post.archive_node(:year => 2010, :month => 1)
+    def archive_node(options={})
+      options.reverse_merge! ({ :year => Time.now.year })
+
+      where("#{date_field} IS NOT NULL").
+      where("YEAR(#{date_field}) = ?", options[:year]).
+      where("MONTH(#{date_field}) = :month OR :month IS NULL", :month => options[:month])
     end
 
     # Constructs a single-level hash of years using the defined +date_field+ column.
