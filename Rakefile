@@ -1,5 +1,6 @@
 require 'rake'
 require 'rake/rdoctask'
+require 'rake/gempackagetask'
 
 desc 'Generate documentation for the archive_tree plugin.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
@@ -20,4 +21,17 @@ begin
   task :default => :spec
 rescue LoadError
   raise 'RSpec could not be loaded. Run `bundle install` to get all development dependencies.'
+end
+
+# Rubygems
+namespace :rubygems do
+  gemspec = eval(File.read('archive_tree.gemspec'))
+  Rake::GemPackageTask.new(gemspec) do |pkg|
+    pkg.gem_spec = gemspec
+  end
+
+  desc "build the gem and release it to rubygems.org"
+  task :release => :gem do
+    sh "gem push pkg/archive_tree-#{gemspec.version}.gem"
+  end
 end

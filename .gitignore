@@ -2,4 +2,5 @@
 spec/config/database.yml
 spec/log/*.log
 .DS_Store
+pkg/*.gem
 !.gitignore
