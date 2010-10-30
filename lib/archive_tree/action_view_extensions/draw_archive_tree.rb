@@ -1,7 +1,8 @@
 module ArchiveTree
   module ActionViewExtensions
 
-    # Defines the helper methods that will be included in the ActionView::Base in order to return the html representation of the archive tree
+    # Defines the helper methods that will be included in the ActionView::Base in 
+    # order to return the html representation of the archive tree
     module DrawArchiveTree
 
       # In the presence of records for a given model it draws the archive tree. Otherwise, returns an empty string
