@@ -56,7 +56,9 @@ Post.archive_tree(:years_and_months => { 2010 => [1] }) #=> { 2010 => { 1 => [Po
 
 ### Views
 
-TODO: add view examples
+<pre>
+draw_archive_tree(:model_sym => :post, :route => :archive_published_at_path, :toggle => false)
+</pre>
 
 ## Documentation
 

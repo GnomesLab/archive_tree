@@ -27,7 +27,7 @@ module ArchiveTree
       #   <%= draw_archive_tree %>
       #
       # Overriding the defaults example:
-      #   <%= draw_archive_tree :model_sym => :post, :route => :archive_published_at_path, :toggle => falses %>
+      #   <%= draw_archive_tree :model_sym => :post, :route => :archive_published_at_path, :toggle => false %>
 
       def draw_archive_tree(options = {})
         options.reverse_merge!({ :model_sym => :post, :route => :posts_path, :toggle => true, :toggle_text => '[ + ]' })
