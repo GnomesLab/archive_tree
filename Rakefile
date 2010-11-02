@@ -32,6 +32,7 @@ namespace :rubygems do
 
   desc "build the gem and release it to rubygems.org"
   task :release => :gem do
+    sh "rake spec"
     sh "gem push pkg/archive_tree-#{gemspec.version}.gem"
   end
 end
