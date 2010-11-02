@@ -40,30 +40,29 @@ describe ArchiveTree::ActionViewExtensions::DrawArchiveTree do
       end
 
       it "allows the model name to be overriden" do
-        lambda { @helper.draw_archive_tree(:hello) }.should raise_error NameError
+        lambda { @helper.draw_archive_tree(:model_sym => :hello) }.should raise_error NameError
       end
 
       it "allows the route to be overriden" do
-        @helper.draw_archive_tree(:post, :dummy_path).should == %Q{<ul><li class=\"active\"><a href=\"#\" class=\"toggle\">[ + ]</a> <a href=\"/dummy/2010\">2010</a><ul><li><a href=\"/dummy/2010\">January (1)</a></li><li><a href=\"/dummy/2010\">February (1)</a></li></ul></li></ul>}
+        @helper.draw_archive_tree(:route => :dummy_path).should == %Q{<ul><li class=\"active\"><a href=\"#\" class=\"toggle\">[ + ]</a> <a href=\"/dummy/2010\">2010</a><ul><li><a href=\"/dummy/2010\">January (1)</a></li><li><a href=\"/dummy/2010\">February (1)</a></li></ul></li></ul>}
+      end
+
+      it "defaults to the hardcoded route whenever the provided route is unknown" do
+        1.upto(10) { |i| Factory.create :post }
+        @helper.draw_archive_tree(:route => :xpto_path).should match(/ul/)
       end
 
       it "allows the toggle to be overriden" do
-        html = @helper.draw_archive_tree(:post, :created_at, false)
+        html = @helper.draw_archive_tree(:toggle => false)
         html.should_not include '<a href="#" class="toggle">[ + ]</a>'
       end
 
       it "allows the toggle text to be overriden" do
-        html = @helper.draw_archive_tree(:post, :created_at, true, '+toggle+')
+        html = @helper.draw_archive_tree(:toggle_text => '+toggle+')
         html.should include '<a href="#" class="toggle">+toggle+</a>'
       end
-    end # overridable
 
-    describe "overridable route" do
-      it "defaults to the hardcoded route whenever the provided route is unknown" do
-        1.upto(10) { |i| Factory.create :post }
-        @helper.draw_archive_tree(:post, :xpto_path).should match(/ul/)
-      end
-    end # overridable route
+    end # overridable
 
   end # draw_achive_tree
 

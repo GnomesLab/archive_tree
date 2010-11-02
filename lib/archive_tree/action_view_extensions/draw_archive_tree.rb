@@ -13,20 +13,27 @@ module ArchiveTree
       #
       # Default behavior
       #   * It will attempt to create a tree of your Post model
-      #   * Will use the post_published_at_path route
+      #   * Will use the posts_path route
       #   * Will display a toggle link
-      #   * Will use "[ + ]" as the link text
+      #   * Will use "[ + ]" as the text for the toggle link
+      #
+      # Options
+      #   * model_sym #=> the symbol of the model to request the archive_nodes
+      #   * route #=> the route that handles the archived posts requests
+      #   * toggle #=> when true, includes a toggle link before the years
+      #   * toggle_text #=> the text used in the toggle link
       #
       # Example using the default settings:
       #   <%= draw_archive_tree %>
       #
       # Overriding the defaults example:
-      #   <%= draw_archive_tree :archive, :archive_published_at_path %>
+      #   <%= draw_archive_tree :model_sym => :post, :route => :archive_published_at_path, :toggle => falses %>
 
-      def draw_archive_tree(model_sym = :post, route = :posts_path, toggle = true, toggle_text = '[ + ]')
-        model = model_sym.to_s.capitalize.constantize
+      def draw_archive_tree(options = {})
+        options.reverse_merge!({ :model_sym => :post, :route => :posts_path, :toggle => true, :toggle_text => '[ + ]' })
+        model = options[:model_sym].to_s.capitalize.constantize
 
-        raw model.count > 0 ? draw_years(model_sym, route, toggle, toggle_text) : ""
+        raw model.count > 0 ? draw_years(model, options[:route], options[:toggle], options[:toggle_text]) : ''
       end # draw_archive_tree
 
       private
