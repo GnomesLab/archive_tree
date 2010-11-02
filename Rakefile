@@ -27,12 +27,12 @@ end
 namespace :rubygems do
   gemspec = eval(File.read('archive_tree.gemspec'))
   Rake::GemPackageTask.new(gemspec) do |pkg|
-    sh "rake spec"
     pkg.gem_spec = gemspec
   end
 
   desc "build the gem and release it to rubygems.org"
   task :release => :gem do
+    sh "rake spec"
     sh "gem push pkg/archive_tree-#{gemspec.version}.gem"
   end
 end
