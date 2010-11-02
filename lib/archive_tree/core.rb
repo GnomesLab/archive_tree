@@ -141,7 +141,7 @@ module ArchiveTree
 
         months.each do |month|
           tree[year][month] = {}
-          tree[year][month] = archive_node year, month
+          tree[year][month] = archive_node(:year => year, :month => month)
         end
       end
 
