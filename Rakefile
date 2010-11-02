@@ -27,6 +27,7 @@ end
 namespace :rubygems do
   gemspec = eval(File.read('archive_tree.gemspec'))
   Rake::GemPackageTask.new(gemspec) do |pkg|
+    sh "rake spec"
     pkg.gem_spec = gemspec
   end
 
