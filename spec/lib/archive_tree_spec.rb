@@ -10,13 +10,17 @@ describe ArchiveTree do
 
     it "should raise exception for undefined fields" do
       lambda do
-        eval("class Post < ActiveRecord::Base\n acts_as_archive(:dummy)\n end")
+        class Post < ActiveRecord::Base
+          acts_as_archive :dummy
+        end
       end.should raise_error(ArgumentError)
     end
 
     it "should raise exception for invalid fields" do
       lambda do
-        eval("class Post < ActiveRecord::Base\n acts_as_archive(:body)\n end")
+        class Post < ActiveRecord::Base
+          acts_as_archive :body
+        end
       end.should raise_error(ArgumentError)
     end
 

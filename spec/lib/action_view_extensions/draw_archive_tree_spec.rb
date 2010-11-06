@@ -6,8 +6,15 @@ describe ArchiveTree::ActionViewExtensions::DrawArchiveTree do
     @helper = ActionView::Base.new
 
     # Inject routes into ActionView::Base
-    @helper.instance_eval("def posts_path(*args)\n '/blog/2010'\n end")
-    @helper.instance_eval("def dummy_path(*args)\n '/dummy/2010'\n end")
+    @helper.instance_eval do
+      def posts_path(*)
+        '/blog/2010'
+      end
+
+      def dummy_path(*)
+        '/dummy/2010'
+      end
+    end
   end
 
   describe "draw_achive_tree" do
