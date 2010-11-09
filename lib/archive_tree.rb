@@ -33,5 +33,3 @@ module ArchiveTree
     attr_accessor :date_field
 
 end # ArchiveTree
-
-ActiveRecord::Base.send :extend, ArchiveTree if defined?(ActiveRecord::Base)

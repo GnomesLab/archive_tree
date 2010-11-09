@@ -1,14 +1,14 @@
 $:.unshift File.dirname(__FILE__) unless $:.include? File.dirname(__FILE__)
+$:.unshift File.join(File.dirname(__FILE__), '..') unless $:.include? File.join(File.dirname(__FILE__), '..')
 
 begin
+  require 'init'
   require 'erb'
   require 'logger'
   require 'rspec'
   require 'active_record'
   require 'database_cleaner'
   require 'factory_girl'
-  require 'action_view'
-  require 'archive_tree'
 
   RSpec.configure do |config|
     config.debug = true
