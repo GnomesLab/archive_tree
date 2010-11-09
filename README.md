@@ -26,6 +26,10 @@ rails plugin install git://github.com/GnomesLab/archive_tree.git
 </pre>
 
 
+## Demo (live)
+
+If you would like to see this gem in action please visit [Gnomeslab blog](http://gnomeslab.com/blog) at http://gnomeslab.com/blog.
+
 ## Examples
 
 Imagine that you have a blog application with Posts. Great!
