@@ -20,7 +20,7 @@ describe ArchiveTree::ActionViewExtensions do
   describe "draw_achive_tree" do
 
     it "should be included in ActionView::Base" do
-      ActionView::Base.instance_methods.should include :draw_archive_tree
+      @helper.should respond_to :draw_archive_tree
     end # included
 
     describe "without posts" do

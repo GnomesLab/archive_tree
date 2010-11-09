@@ -6,8 +6,10 @@ Since it uses a column of your choice, from any ActiveRecord Model, you will hav
 
 ## Compatibility
 
-The Gem was developed with Ruby 1.9.2 and Ruby on Rails 3.0.x
+The Gem was developed to work with Rails 3.0.x, running on Ruby 1.8.7 or 1.9.2.
 Since it uses SQL specific queries, it works on MySQL and PostgreSQL databases.
+
+**Note:** This gem does not work with Ruby v1.9.1.
 
 ## Installation
 
@@ -37,7 +39,7 @@ Now let's say that you wish to allow your users to sweep through your posts in a
 In your ActiveRecord Model:
 
 <pre>
-  acts_as_archive #=> defaults to :created_at
+acts_as_archive #=> defaults to :created_at
 </pre>
 
 #### Default usage:
