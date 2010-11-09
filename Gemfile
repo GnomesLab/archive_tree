@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
-gem 'activerecord', '~> 3.0.0'
+gem 'activerecord', '~> 3.0.1'
+gem 'actionpack', '~> 3.0.1'
 
 group :development, :test do
   gem 'mysql', '~> 2.8.0'
