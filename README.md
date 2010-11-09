@@ -76,7 +76,7 @@ draw_archive_tree #=> defaults to: :model_sym => :post, :route => :posts_path, :
 
 ## Documentation
 
-This gem's documentation documentation is available at http://rubydoc.info/github/GnomesLab/archive_tree/
+This gem's documentation documentation is available at [rubydoc.info](http://rubydoc.info/github/GnomesLab/archive_tree/master/frames)
 
 
 ## License
