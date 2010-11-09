@@ -1,9 +1,13 @@
 ## Introduction
 
-ArchiveTree is a plugin for your Ruby on Rails application that makes it easy for you to generate structured trees of your records.
+ArchiveTree is a Ruby Gem for your Ruby on Rails application that makes it easy for you to generate structured trees of your records.
 
-Since it makes use of your model's _created_at_ column, ArchiveTree is ultimately compatible with most ActiveRecord Models out there.
+Since it uses a column of your choice from any ActiveRecord Model, you will have flexibility to use in most of the Ruby on Rails applications
 
+## Compatibility
+
+The Gem was developed with Ruby 1.9.2 and Ruby on Rails 3.0.
+Since it uses SQL specific queries, it works on MySQL and PostgreSQL databases.
 
 ## Installation
 
@@ -27,6 +31,14 @@ Imagine that you have a blog application with Posts. Great!
 Now let's say that you wish to allow your users to sweep through your posts in a chronologically accurate tree view. Enters ArchiveTree!
 
 ### API
+
+#### Inclusion:
+
+In your ActiveRecord Model:
+
+<pre>
+  acts_as_archive #=> defaults to :created_at
+</pre>
 
 #### Default usage:
 
@@ -54,15 +66,15 @@ Post.archive_tree(:months => [1]) #=> { 2010 => { 1 => [Post] },
 Post.archive_tree(:years_and_months => { 2010 => [1] }) #=> { 2010 => { 1 => [Post] } }
 </pre>
 
-### Views
+### View
 
 <pre>
-draw_archive_tree(:model_sym => :post, :route => :archive_published_at_path, :toggle => false)
+draw_archive_tree #=> defaults to: :model_sym => :post, :route => :posts_path, :toggle => true, :toggle_text => '[ + ]'
 </pre>
 
 ## Documentation
 
-This gem's documentation documentation is available at http://yardoc.org/docs/GnomesLab-archive_tree
+This gem's documentation documentation is available at http://rubydoc.info/github/GnomesLab/archive_tree/
 
 
 ## License
