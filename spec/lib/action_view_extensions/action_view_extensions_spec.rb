@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ArchiveTree::ActionViewExtensions::DrawArchiveTree do
+describe ArchiveTree::ActionViewExtensions do
 
   before :each do
     @helper = ActionView::Base.new
@@ -73,4 +73,4 @@ describe ArchiveTree::ActionViewExtensions::DrawArchiveTree do
 
   end # draw_achive_tree
 
-end # ArchiveTree::ActionViewExtensions::DrawArchiveTree
+end # ArchiveTree::ActionViewExtensions

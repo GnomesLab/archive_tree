@@ -17,8 +17,8 @@
 # TODO: This module should undergo a query optimization. Furthermore, an ORM abstraction.
 module ArchiveTree
 
-  require 'archive_tree/action_view_extensions'
   autoload :Core, 'archive_tree/core'
+  autoload :ActionViewExtensions, 'archive_tree/action_view_extensions'
 
   def acts_as_archive(date_field = :created_at)
     raise ::ArgumentError, "undefined parameter #{date_field.to_s}" unless column = columns_hash[date_field.to_s]
