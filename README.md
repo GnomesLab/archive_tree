@@ -2,11 +2,11 @@
 
 ArchiveTree is a Ruby Gem for your Ruby on Rails application that makes it easy for you to generate structured trees of your records.
 
-Since it uses a column of your choice from any ActiveRecord Model, you will have flexibility to use in most of the Ruby on Rails applications
+Since it uses a column of your choice, from any ActiveRecord Model, you will have flexibility to use in most of the Ruby on Rails applications
 
 ## Compatibility
 
-The Gem was developed with Ruby 1.9.2 and Ruby on Rails 3.0.
+The Gem was developed with Ruby 1.9.2 and Ruby on Rails 3.0.x
 Since it uses SQL specific queries, it works on MySQL and PostgreSQL databases.
 
 ## Installation
