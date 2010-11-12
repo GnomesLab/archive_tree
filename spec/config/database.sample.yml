@@ -9,6 +9,3 @@ defaults: &defaults
 test: &test
   database: archive_tree_test
   <<: *defaults
-
-cucumber:
-  <<: *test
