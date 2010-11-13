@@ -33,7 +33,3 @@ module ArchiveTree
     attr_accessor :date_field
 
 end # ArchiveTree
-
-# Extending Rails Classes
-ActiveRecord::Base.send :extend, ArchiveTree if defined?(ActiveRecord::Base)
-ActionView::Base.send :include, ArchiveTree::ActionViewExtensions if defined?(ActionView::Base)

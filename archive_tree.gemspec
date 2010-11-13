@@ -24,6 +24,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'factory_girl_rails', '~> 1.0.0'
   s.add_development_dependency 'database_cleaner', '~> 0.6.0'
 
-  s.files = Dir['lib/**/*.rb'] + Dir['[A-Z]*'] + Dir['spec/**/*.rb']
+  s.files = Dir['lib/**/*.rb'] + Dir['[A-Z]*'] + Dir['spec/**/*.rb'] + ['init.rb']
   s.require_paths << 'lib'
 end
