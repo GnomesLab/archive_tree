@@ -16,6 +16,8 @@
 #
 # TODO: This module should undergo a query optimization. Furthermore, an ORM abstraction.
 module ArchiveTree
+  require 'active_record'
+  require 'action_view'
 
   autoload :Core, 'archive_tree/core'
   autoload :ActionViewExtensions, 'archive_tree/action_view_extensions'
@@ -33,3 +35,7 @@ module ArchiveTree
     attr_accessor :date_field
 
 end # ArchiveTree
+
+# Extending Rails Classes
+ActiveRecord::Base.send :extend, ArchiveTree if defined?(ActiveRecord::Base)
+ActionView::Base.send :include, ArchiveTree::ActionViewExtensions if defined?(ActionView::Base)
