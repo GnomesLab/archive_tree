@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
 
   s.name        = 'archive_tree'
-  s.version     = '1.0.0'
+  s.version     = '1.0.1'
   s.summary     = 'Creates chronological trees of your models based on column of your choice.'
 
   s.authors     = ['Diogo Almeida', 'Miguel Teixeira']
