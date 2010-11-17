@@ -4,6 +4,7 @@ gem 'activerecord', '~> 3.0.1'
 gem 'actionpack', '~> 3.0.1'
 
 group :development, :test do
+  gem 'fuubar', '~> 0.0'
   gem 'mysql', '~> 2.8.0'
 
   if RUBY_VERSION =~ /1\.9\.\d/
