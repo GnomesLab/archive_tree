@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
 
   s.name        = 'archive_tree'
-  s.version     = '1.0.2'
+  s.version     = '1.0.3'
   s.summary     = 'Creates chronological trees of your models based on column of your choice.'
 
   s.authors     = ['Diogo Almeida', 'Miguel Teixeira']
@@ -15,9 +15,10 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = '>= 1.3.7'
 
-  s.add_dependency('activerecord', '~> 3.0.1')
-  s.add_dependency('actionpack', '~> 3.0.1')
+  s.add_dependency('activerecord', '~> 3.0.0')
+  s.add_dependency('actionpack', '~> 3.0.0')
 
+  s.add_development_dependency 'fuubar', '~> 0.0'
   s.add_development_dependency 'mysql', '~> 2.8.0'
   s.add_development_dependency 'ruby-debug19', '~> 0.11.0'
   s.add_development_dependency 'rspec', '~> 2.0.0'
