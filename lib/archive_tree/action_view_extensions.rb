@@ -30,7 +30,7 @@ module ArchiveTree
       options.reverse_merge!({ :model_sym => :post, :route => :posts_path, :toggle => true, :toggle_text => '[ + ]' })
       model = options[:model_sym].to_s.capitalize.constantize
 
-      raw model.count > 0 ? draw_years(model, options[:route], options[:toggle], options[:toggle_text]) : ''
+      model.count > 0 ? draw_years(model, options[:route], options[:toggle], options[:toggle_text]) : ''
     end # draw_archive_tree
 
     private
@@ -49,7 +49,7 @@ module ArchiveTree
             end
           end
 
-          ul_body
+          ul_body.html_safe
         end
       end # draw_years
 
@@ -64,7 +64,7 @@ module ArchiveTree
                                                 self.send(route, year, month < 10 ? "0#{month}" : month)))
           end
 
-          ul_body
+          ul_body.html_safe
         end
       end # draw_months
 
