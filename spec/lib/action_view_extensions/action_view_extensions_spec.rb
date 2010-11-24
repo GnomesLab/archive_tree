@@ -5,17 +5,10 @@ describe ArchiveTree::ActionViewExtensions do
   before :each do
     @helper = ActionView::Base.new
 
-    # Inject routes into ActionView::Base
-    @helper.instance_eval do
-      def posts_path(*)
-        '/blog/2010'
-      end
-
-      def dummy_path(*)
-        '/dummy/2010'
-      end
-    end
-  end
+    # Stub some routes into ActionView::Base
+    @helper.stub!(:posts_path).and_return('/blog/2010')
+    @helper.stub!(:dummy_path).and_return('/dummy/2010')
+  end # before all
 
   describe "draw_achive_tree" do
 
