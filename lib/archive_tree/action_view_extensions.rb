@@ -8,29 +8,31 @@ module ArchiveTree
     #   * +draw_years+
     #   * +draw_months+
     #
+    # Parameters
+    #  * model #=> symbol of the desirable model
+    #  * options #=> hash with the overridable options
+    #
     # Default behavior
-    #   * It will attempt to create a tree of your Post model
     #   * Will use the posts_path route
     #   * Will display a toggle link
     #   * Will use "[ + ]" as the text for the toggle link
     #
     # Options
-    #   * model_sym #=> the symbol of the model to request the archive_nodes
     #   * route #=> the route that handles the archived posts requests
     #   * toggle #=> when true, includes a toggle link before the years
     #   * toggle_text #=> the text used in the toggle link
     #
     # Example using the default settings:
-    #   <%= draw_archive_tree %>
+    #   <%= draw_archive_tree :post %>
     #
     # Overriding the defaults example:
-    #   <%= draw_archive_tree :model_sym => :post, :route => :archive_published_at_path, :toggle => false %>
+    #   <%= draw_archive_tree :post, :route => :archive_published_at_path, :toggle => false %>
 
-    def draw_archive_tree(options = {})
-      options.reverse_merge!({ :model_sym => :post, :route => :posts_path, :toggle => true, :toggle_text => '[ + ]' })
-      model = options[:model_sym].to_s.capitalize.constantize
+    def draw_archive_tree(model, options = {})
+      options.reverse_merge!({ :route => :posts_path, :toggle => true, :toggle_text => '[ + ]' })
+      model_const = model.to_s.capitalize.constantize
 
-      model.count > 0 ? draw_years(model, options[:route], options[:toggle], options[:toggle_text]) : ''
+      model_const.count > 0 ? draw_years(model_const, options[:route], options[:toggle], options[:toggle_text]) : ''
     end # draw_archive_tree
 
     private
