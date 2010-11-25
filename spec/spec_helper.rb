@@ -6,9 +6,9 @@ begin
   require 'erb'
   require 'logger'
   require 'rspec'
-  require 'active_record'
-  require 'database_cleaner'
+  require 'nokogiri'
   require 'factory_girl'
+  require 'database_cleaner'
 
   RSpec.configure do |config|
     config.debug = true

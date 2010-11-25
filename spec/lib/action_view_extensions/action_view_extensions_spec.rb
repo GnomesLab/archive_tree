@@ -6,9 +6,9 @@ describe ArchiveTree::ActionViewExtensions do
     @helper = ActionView::Base.new
 
     # Stub some routes into ActionView::Base
-    @helper.stub!(:posts_path).and_return('/blog/2010')
-    @helper.stub!(:dummy_path).and_return('/dummy/2010')
-  end # before all
+    @helper.stub!(:posts_path).and_return('/blog/2009')
+    @helper.stub!(:dummy_path).and_return('/dummy/2009')
+  end # before each
 
   describe "draw_achive_tree" do
 
@@ -24,45 +24,63 @@ describe ArchiveTree::ActionViewExtensions do
 
     describe "with posts" do
       before :each do
-        Factory.create :post, :created_at => Date.new(Time.now.year, 1, 1)
-        Factory.create :post, :created_at => Date.new(Time.now.year, 2, 1)
+        Factory.create(:post, :created_at => Date.new(2009, 1, 1))
+        Factory.create(:post, :created_at => Date.new(2009, 2, 1))
       end
 
-      it "should return the archive tree for all records" do
-        @helper.draw_archive_tree(:post).should == %Q{<ul><li class=\"active\"><a href=\"#\" class=\"toggle\">[ + ]</a> <a href=\"/blog/2010\">2010</a><ul><li><a href=\"/blog/2010\">January (1)</a></li><li><a href=\"/blog/2010\">February (1)</a></li></ul></li></ul>}
-      end
+      describe "parameters" do
+        it "returns the archive tree for the posts model" do
+          @html = Nokogiri::HTML(@helper.draw_archive_tree(:post))
+          @html.css('body > ul > li').should have(1).element
+          @html.css('ul ul li').should have(2).elements
+        end
+
+        it "returns the archive tree using the posts_path route" do
+          @html = Nokogiri::HTML(@helper.draw_archive_tree(:post))
+          @html.css('body > ul > li').should have(1).element
+          @html.css('ul ul a[href="/blog/2009"]').should have(2).elements
+        end
+
+        it "returns the archive tree using the dummy_path route" do
+          @html = Nokogiri::HTML(@helper.draw_archive_tree(:post, :dummy_path))
+          @html.css('body > ul > li').should have(1).element
+          @html.css('ul ul a[href="/dummy/2009"]').should have(2).elements
+        end
+      end # parameters
+
+      describe "current year" do
+        it "returns the current year with the 'current' class" do
+          Factory.create(:post, :created_at => Time.now)
+          @html = Nokogiri::HTML(@helper.draw_archive_tree(:post))
+          @html.css('body > ul > .current').should have(1).element
+        end
+      end # current year
+
+      describe "years list" do
+        it "must have the year digits" do
+          @html = Nokogiri::HTML(@helper.draw_archive_tree(:post))
+          @html.css('body > ul > li > a').text.should include '2009'
+        end
+
+        it "must have the months count" do
+          @html = Nokogiri::HTML(@helper.draw_archive_tree(:post))
+          @html.css('body > ul > li > a').text.should include '(2)'
+        end
+      end # years list
+
+      describe "months list" do
+        it "must have the months names" do
+          @html = Nokogiri::HTML(@helper.draw_archive_tree(:post))
+          @html.css('body > ul ul a').text.should include 'January', 'February'
+        end
+
+        it "must have the months count" do
+          @html = Nokogiri::HTML(@helper.draw_archive_tree(:post))
+          @html.css('body > ul ul a').text.should include '(1)', '(1)'
+        end
+      end # years list
+
     end # with posts
-
-    describe "overridable" do
-      before :each do
-        Factory.create :post, :created_at => Date.new(Time.now.year, 1, 1)
-        Factory.create :post, :created_at => Date.new(Time.now.year, 2, 1)
-      end
-
-      it "allows the model name to be overriden" do
-        lambda { @helper.draw_archive_tree(:hello) }.should raise_error NameError
-      end
-
-      it "allows the route to be overriden" do
-        @helper.draw_archive_tree(:post, :route => :dummy_path).should == %Q{<ul><li class=\"active\"><a href=\"#\" class=\"toggle\">[ + ]</a> <a href=\"/dummy/2010\">2010</a><ul><li><a href=\"/dummy/2010\">January (1)</a></li><li><a href=\"/dummy/2010\">February (1)</a></li></ul></li></ul>}
-      end
-
-      it "defaults to the hardcoded route whenever the provided route is unknown" do
-        1.upto(10) { |i| Factory.create :post }
-        @helper.draw_archive_tree(:post, :route => :xpto_path).should match(/ul/)
-      end
-
-      it "allows the toggle to be overriden" do
-        html = @helper.draw_archive_tree(:post, :toggle => false)
-        html.should_not include '<a href="#" class="toggle">[ + ]</a>'
-      end
-
-      it "allows the toggle text to be overriden" do
-        html = @helper.draw_archive_tree(:post, :toggle_text => '+toggle+')
-        html.should include '<a href="#" class="toggle">+toggle+</a>'
-      end
-
-    end # overridable
 
   end # draw_achive_tree
 
