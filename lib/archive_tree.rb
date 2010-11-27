@@ -1,41 +1,48 @@
-# +ArchiveTree+ is responsible for the creation of hashes that cronologically represent your model
-# based on a provided field
+# +ArchiveTree+ helps you creating cronological representations of your model.
 #
-# If you wish to take advantage of its functionalities, please use the acts_as_archive method in your ActiveRecord Model.
+# This module will extend ActiveRecord adding the +acts_as_archive+ method so you could specify what column you want
+# to use in the cronological representation.
 #
-# Examples
+# Since you probably want to show this cronological representation in a HTML page, the module also adds the
+# +draw_archive_tree+ method to ActionView so you could easily get the HTML tree in your views.
+#
+# Example usage:
+#
+#   Configure your model:
 #   class Post < ActiveRecord::Base
-#     acts_as_archive # uses +created_at+ by default
+#     acts_as_archive
 #   end
 #
-#   class Post < ActiveRecord::Base
-#     acts_as_archive :published_at # uses +published_at+ instead of +created_at+ (default)
-#   end
-#
-#   Post.archive_tree(:years_and_months => { 2010 => [1] }) #=> { 2010 => { 1 => [Post] } }
+#   Render the HTML tree:
+#   <%= draw_archive_tree :post %>
 #
 # TODO: This module should undergo a query optimization. Furthermore, an ORM abstraction.
 module ArchiveTree
-  require 'active_record'
-  require 'action_view'
 
-  autoload :Core, 'archive_tree/core'
-  autoload :ActionViewExtensions, 'archive_tree/action_view_extensions'
+  require 'archive_tree/rails_ext'
 
+  # Class method that will add the scopes methods to your model.
+  #
+  # Parameters:
+  #   * date_field #=> The datetime column that should be used in the cronological representations
+  #
+  # Defaults:
+  #   * date_field #=> Uses the created_at column
+  #
+  # Example:
+  #   class Post < ActiveRecord::Base
+  #     acts_as_archive :created_at
+  #   end
   def acts_as_archive(date_field = :created_at)
     raise ::ArgumentError, "undefined parameter #{date_field.to_s}" unless column = columns_hash[date_field.to_s]
     raise ::ArgumentError, "invalid parameter #{date_field.to_s}"   unless column.type == :datetime
 
     self.date_field = date_field # Stores the date column
 
-    extend Core
+    extend RailsExt::ActiveRecord::Scopes
   end
 
   private
     attr_accessor :date_field
 
 end # ArchiveTree
-
-# Extending Rails Classes
-ActiveRecord::Base.send :extend, ArchiveTree if defined?(ActiveRecord::Base)
-ActionView::Base.send :include, ArchiveTree::ActionViewExtensions if defined?(ActionView::Base)

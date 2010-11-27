@@ -7,6 +7,7 @@ begin
   require 'logger'
   require 'rspec'
   require 'nokogiri'
+  require 'ruby-debug'
   require 'factory_girl'
   require 'database_cleaner'
 
@@ -31,6 +32,7 @@ begin
   end
 rescue LoadError => load_error
   puts "Please run bundle install"
+  throw load_error
 rescue StandardError => e
   puts "Something went wrong while loading the environment."
   throw e

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ArchiveTree::ActionViewExtensions do
+describe ArchiveTree::RailsExt::ActionView::Helper do
 
   before :each do
     @helper = ActionView::Base.new
