@@ -36,8 +36,23 @@ module ArchiveTree
     #   Post.years_hash #=> { 2009 => 8, 2010 => 30 }
     def archived_years
       years = {}
-      where("#{date_field} IS NOT NULL").
-      group("EXTRACT(YEAR FROM #{date_field} AT TIME ZONE '+6')").size.each { |year, count| years[year.to_i] = count }
+
+      db_adapter = ActiveRecord::Base.configurations[Rails.env]['adapter']
+
+      if db_adapter == "postgresql"
+        tz = Time.zone.utc_offset / 60 / 60
+        time_zone = "#{tz > 0 ? "+#{tz.to_s}" : tz.to_s}" 
+        
+        archived_nodes = where("#{date_field} IS NOT NULL").
+                         group("EXTRACT(YEAR FROM #{date_field} AT TIME ZONE '#{time_zone}')")
+                         order("EXTRACT(YEAR FROM #{date_field} AT TIME ZONE '#{time_zone}') ASC").size
+      else
+       archived_nodes = where("#{date_field} IS NOT NULL").
+                         group("EXTRACT(YEAR FROM #{date_field})")
+                         order("EXTRACT(YEAR FROM #{date_field}) ASC").size
+      end 
+
+      archived_nodes.each { |year, count| years[year.to_i] = count }
 
       years
     end # archived_years
@@ -65,8 +80,22 @@ module ArchiveTree
       months  = {}
       month_format = options.delete(:month_names) || :int
 
-      where("EXTRACT(YEAR FROM #{date_field} AT TIME ZONE '+6') = #{options[:year] || Time.now.year}").
-      group("EXTRACT(MONTH FROM #{date_field} AT TIME ZONE '+6')").size.each do |month, c|
+      db_adapter = ActiveRecord::Base.configurations[Rails.env]['adapter']
+
+      if db_adapter == "postgresql"
+        tz = Time.zone.utc_offset / 60 / 60
+        time_zone = "#{tz > 0 ? "+#{tz.to_s}" : tz.to_s}"
+
+        archived_nodes = where("EXTRACT(YEAR FROM #{date_field} AT TIME ZONE '#{time_zone}') = #{options[:year] || Time.now.year}").
+                         group("EXTRACT(MONTH FROM #{date_field} AT TIME ZONE '#{time_zone}')")
+                         order("EXTRACT(MONTH FROM #{date_field} AT TIME ZONE '#{time_zone}') ASC").size
+      else
+       archived_nodes = where("EXTRACT(YEAR FROM #{date_field}) = #{options[:year] || Time.now.year}").
+                         group("EXTRACT(MONTH FROM #{date_field})")
+                         order("EXTRACT(MONTH FROM #{date_field}) ASC").size
+      end 
+
+      archived_nodes.each do |month, c|
         key = case month_format
         when :long
           Date::MONTHNAMES[month.to_i]
