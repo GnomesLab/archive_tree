@@ -17,10 +17,19 @@ module ArchiveTree
     #   Post.archive_node(:year => 2010, :month => 1)
     def archive_node(options={})
       options.reverse_merge! ({ :year => Time.now.year })
+      
+      db_adapter = ActiveRecord::Base.configurations[Rails.env]['adapter']
+
+      time_zone = ''
+
+      if db_adapter == "postgresql"
+        tz = Time.zone.utc_offset / 60 / 60
+        time_zone = " AT TIME ZONE '#{tz > 0 ? "+#{tz.to_s}" : tz.to_s}'"
+      end
 
       where("#{date_field} IS NOT NULL").
-      where("EXTRACT(YEAR FROM #{date_field} AT TIME ZONE '+6') = :year", :year => options[:year]).
-      where("EXTRACT(MONTH FROM #{date_field} AT TIME ZONE '+6') = :month OR :month IS NULL", :month => options[:month])
+      where("EXTRACT(YEAR FROM #{date_field}#{time_zone}) = :year", :year => options[:year]).
+      where("EXTRACT(MONTH FROM #{date_field}#{time_zone}) = :month OR :month IS NULL", :month => options[:month])
     end
 
     # Constructs a single-level hash of years using the defined +date_field+ column.
@@ -38,21 +47,18 @@ module ArchiveTree
       years = {}
 
       db_adapter = ActiveRecord::Base.configurations[Rails.env]['adapter']
+      
+      time_zone = ''
 
       if db_adapter == "postgresql"
         tz = Time.zone.utc_offset / 60 / 60
-        time_zone = "#{tz > 0 ? "+#{tz.to_s}" : tz.to_s}" 
-        
-        archived_nodes = where("#{date_field} IS NOT NULL").
-                         group("EXTRACT(YEAR FROM #{date_field} AT TIME ZONE '#{time_zone}')")
-                         order("EXTRACT(YEAR FROM #{date_field} AT TIME ZONE '#{time_zone}') ASC").size
-      else
-       archived_nodes = where("#{date_field} IS NOT NULL").
-                         group("EXTRACT(YEAR FROM #{date_field})")
-                         order("EXTRACT(YEAR FROM #{date_field}) ASC").size
+        time_zone = " AT TIME ZONE '#{tz > 0 ? "+#{tz.to_s}" : tz.to_s}'"
       end 
-
-      archived_nodes.each { |year, count| years[year.to_i] = count }
+        
+      where("#{date_field} IS NOT NULL").
+      group("EXTRACT(YEAR FROM #{date_field}#{time_zone})")
+      order("EXTRACT(YEAR FROM #{date_field}#{time_zone}) ASC").size.each { |year, count| years[year.to_i] = count }
+      
 
       years
     end # archived_years
@@ -82,20 +88,16 @@ module ArchiveTree
 
       db_adapter = ActiveRecord::Base.configurations[Rails.env]['adapter']
 
+      time_zone = ''
+
       if db_adapter == "postgresql"
         tz = Time.zone.utc_offset / 60 / 60
-        time_zone = "#{tz > 0 ? "+#{tz.to_s}" : tz.to_s}"
-
-        archived_nodes = where("EXTRACT(YEAR FROM #{date_field} AT TIME ZONE '#{time_zone}') = #{options[:year] || Time.now.year}").
-                         group("EXTRACT(MONTH FROM #{date_field} AT TIME ZONE '#{time_zone}')")
-                         order("EXTRACT(MONTH FROM #{date_field} AT TIME ZONE '#{time_zone}') ASC").size
-      else
-       archived_nodes = where("EXTRACT(YEAR FROM #{date_field}) = #{options[:year] || Time.now.year}").
-                         group("EXTRACT(MONTH FROM #{date_field})")
-                         order("EXTRACT(MONTH FROM #{date_field}) ASC").size
+        time_zone = " AT TIME ZONE '#{tz > 0 ? "+#{tz.to_s}" : tz.to_s}'"
       end 
 
-      archived_nodes.each do |month, c|
+      where("EXTRACT(YEAR FROM #{date_field}#{time_zone}) = #{options[:year] || Time.now.year}").
+      group("EXTRACT(MONTH FROM #{date_field}#{time_zone})")
+      order("EXTRACT(MONTH FROM #{date_field}#{time_zone}) ASC").size.each do |month, c|
         key = case month_format
         when :long
           Date::MONTHNAMES[month.to_i]
