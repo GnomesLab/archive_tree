@@ -19,8 +19,8 @@ module ArchiveTree
       options.reverse_merge! ({ :year => Time.now.year })
 
       where("#{date_field} IS NOT NULL").
-      where("EXTRACT(YEAR FROM #{date_field}) = :year", :year => options[:year]).
-      where("EXTRACT(MONTH FROM #{date_field}) = :month OR :month IS NULL", :month => options[:month])
+      where("EXTRACT(YEAR FROM #{date_field} AT TIME ZONE '+6') = :year", :year => options[:year]).
+      where("EXTRACT(MONTH FROM #{date_field} AT TIME ZONE '+6') = :month OR :month IS NULL", :month => options[:month])
     end
 
     # Constructs a single-level hash of years using the defined +date_field+ column.
@@ -37,7 +37,7 @@ module ArchiveTree
     def archived_years
       years = {}
       where("#{date_field} IS NOT NULL").
-      group("EXTRACT(YEAR FROM #{date_field})").size.each { |year, count| years[year.to_i] = count }
+      group("EXTRACT(YEAR FROM #{date_field} AT TIME ZONE '+6')").size.each { |year, count| years[year.to_i] = count }
 
       years
     end # archived_years
@@ -65,8 +65,8 @@ module ArchiveTree
       months  = {}
       month_format = options.delete(:month_names) || :int
 
-      where("EXTRACT(YEAR FROM #{date_field}) = #{options[:year] || Time.now.year}").
-      group("EXTRACT(MONTH FROM #{date_field})").size.each do |month, c|
+      where("EXTRACT(YEAR FROM #{date_field} AT TIME ZONE '+6') = #{options[:year] || Time.now.year}").
+      group("EXTRACT(MONTH FROM #{date_field} AT TIME ZONE '+6')").size.each do |month, c|
         key = case month_format
         when :long
           Date::MONTHNAMES[month.to_i]
