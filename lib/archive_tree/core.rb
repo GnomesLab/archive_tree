@@ -56,8 +56,7 @@ module ArchiveTree
       end 
         
       where("#{date_field} IS NOT NULL").
-      group("EXTRACT(YEAR FROM #{date_field}#{time_zone})")
-      order("EXTRACT(YEAR FROM #{date_field}#{time_zone}) ASC").size.each { |year, count| years[year.to_i] = count }
+      group("EXTRACT(YEAR FROM #{date_field}#{time_zone})").size.sort_by{ |key, value| key.to_i }.each { |year, count| years[year.to_i] = count }
       
 
       years
@@ -96,8 +95,7 @@ module ArchiveTree
       end 
 
       where("EXTRACT(YEAR FROM #{date_field}#{time_zone}) = #{options[:year] || Time.now.year}").
-      group("EXTRACT(MONTH FROM #{date_field}#{time_zone})")
-      order("EXTRACT(MONTH FROM #{date_field}#{time_zone}) ASC").size.each do |month, c|
+      group("EXTRACT(MONTH FROM #{date_field}#{time_zone})").size.sort_by{ |key, value| key.to_i }.each do |month, c|
         key = case month_format
         when :long
           Date::MONTHNAMES[month.to_i]
