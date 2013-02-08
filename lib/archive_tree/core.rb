@@ -17,10 +17,19 @@ module ArchiveTree
     #   Post.archive_node(:year => 2010, :month => 1)
     def archive_node(options={})
       options.reverse_merge! ({ :year => Time.now.year })
+      
+      db_adapter = ActiveRecord::Base.configurations[Rails.env]['adapter']
+
+      time_zone = ''
+
+      if db_adapter == "postgresql"
+        tz = Time.zone.utc_offset / 60 / 60
+        time_zone = " AT TIME ZONE '#{tz > 0 ? "+#{tz.to_s}" : tz.to_s}'"
+      end
 
       where("#{date_field} IS NOT NULL").
-      where("EXTRACT(YEAR FROM #{date_field}) = :year", :year => options[:year]).
-      where("EXTRACT(MONTH FROM #{date_field}) = :month OR :month IS NULL", :month => options[:month])
+      where("EXTRACT(YEAR FROM #{date_field}#{time_zone}) = :year", :year => options[:year]).
+      where("EXTRACT(MONTH FROM #{date_field}#{time_zone}) = :month OR :month IS NULL", :month => options[:month])
     end
 
     # Constructs a single-level hash of years using the defined +date_field+ column.
@@ -36,8 +45,19 @@ module ArchiveTree
     #   Post.years_hash #=> { 2009 => 8, 2010 => 30 }
     def archived_years
       years = {}
+
+      db_adapter = ActiveRecord::Base.configurations[Rails.env]['adapter']
+      
+      time_zone = ''
+
+      if db_adapter == "postgresql"
+        tz = Time.zone.utc_offset / 60 / 60
+        time_zone = " AT TIME ZONE '#{tz > 0 ? "+#{tz.to_s}" : tz.to_s}'"
+      end 
+        
       where("#{date_field} IS NOT NULL").
-      group("EXTRACT(YEAR FROM #{date_field})").size.each { |year, count| years[year.to_i] = count }
+      group("EXTRACT(YEAR FROM #{date_field}#{time_zone})").size.sort_by{ |key, value| key.to_i }.each { |year, count| years[year.to_i] = count }
+      
 
       years
     end # archived_years
@@ -65,8 +85,17 @@ module ArchiveTree
       months  = {}
       month_format = options.delete(:month_names) || :int
 
-      where("EXTRACT(YEAR FROM #{date_field}) = #{options[:year] || Time.now.year}").
-      group("EXTRACT(MONTH FROM #{date_field})").size.each do |month, c|
+      db_adapter = ActiveRecord::Base.configurations[Rails.env]['adapter']
+
+      time_zone = ''
+
+      if db_adapter == "postgresql"
+        tz = Time.zone.utc_offset / 60 / 60
+        time_zone = " AT TIME ZONE '#{tz > 0 ? "+#{tz.to_s}" : tz.to_s}'"
+      end 
+
+      where("EXTRACT(YEAR FROM #{date_field}#{time_zone}) = #{options[:year] || Time.now.year}").
+      group("EXTRACT(MONTH FROM #{date_field}#{time_zone})").size.sort_by{ |key, value| key.to_i }.each do |month, c|
         key = case month_format
         when :long
           Date::MONTHNAMES[month.to_i]

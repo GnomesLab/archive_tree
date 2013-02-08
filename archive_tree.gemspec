@@ -15,8 +15,8 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = '>= 1.3.7'
 
-  s.add_dependency('activerecord', '~> 3.0.0')
-  s.add_dependency('actionpack', '~> 3.0.0')
+  s.add_dependency('activerecord', '>= 3.2.3')
+  s.add_dependency('actionpack', '>= 3.2.3')
 
   s.add_development_dependency 'fuubar', '~> 0.0'
   s.add_development_dependency 'mysql', '~> 2.8.0'
